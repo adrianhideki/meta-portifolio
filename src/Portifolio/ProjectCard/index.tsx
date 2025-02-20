@@ -1,6 +1,8 @@
-import { Link } from "@chakra-ui/react";
+import { Icon, Link } from "@chakra-ui/react";
 import { Card } from "@chakra-ui/react/card";
 import { Image } from "@chakra-ui/react/image";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type ProjectCardProps = {
   title: string;
@@ -18,8 +20,8 @@ const ProjectCard = ({
   link,
 }: ProjectCardProps) => {
   return (
-    <Card.Root>
-      {image && <Image src={image} alt={alt} maxH={200} w="auto" fit="cover"  />}
+    <Card.Root overflow={"hidden"}>
+      {image && <Image src={image} alt={alt} maxH={200} w="auto" fit="cover" />}
 
       <Card.Body gap="2">
         <Card.Title mt="2">{title}</Card.Title>
@@ -28,7 +30,10 @@ const ProjectCard = ({
       <Card.Footer justifyContent="flex-end">
         {link && (
           <Link href={link} target="_blank">
-            View
+            See more
+            <Icon>
+              <FontAwesomeIcon icon={faArrowRight} />
+            </Icon>
           </Link>
         )}
       </Card.Footer>
