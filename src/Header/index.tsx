@@ -1,13 +1,16 @@
+import { ColorModeButton } from "@/components/ui/color-mode";
 import { Box, HStack, Icon, Link, Text } from "@chakra-ui/react";
-import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { faGithub, faLinkedin, faMedium, faStackOverflow } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 
 const Header = () => {
   const hoverStyle = { color: "purple.200", transition: "0.3s color" };
   const scrollRef = useRef(0);
   const [hasScrolledDown, setHasScrolledDown] = useState(false);
+  const { theme } = useTheme();
 
   const handleScroll = () => {
     setHasScrolledDown(window.scrollY > scrollRef.current)
@@ -27,7 +30,7 @@ const Header = () => {
       height={20}
       w="100%"
       display="flex"
-      backgroundColor="purple.950"
+      backgroundColor={theme ==="dark" ? "purple.950" : "purple.200"}
       paddingX={40}
       position="fixed"
       top={0}
@@ -51,6 +54,16 @@ const Header = () => {
             <FontAwesomeIcon icon={faLinkedin} />
           </Icon>
         </Link>
+        <Link href="https://stackoverflow.com/users/14121496/adrianhideki" target="_blank">
+          <Icon fontSize="2xl" _hover={hoverStyle}>
+            <FontAwesomeIcon icon={faStackOverflow} />
+          </Icon>
+        </Link>
+        <Link href="https://medium.com/@hidekyun" target="_blank">
+          <Icon fontSize="2xl" _hover={hoverStyle}>
+            <FontAwesomeIcon icon={faMedium} />
+          </Icon>
+        </Link>
         <HStack gap={10} w="100%" justifyContent="end">
           <Link href="#portifolio">
             <Text>Portifolio</Text>
@@ -58,6 +71,7 @@ const Header = () => {
           <Link href="#contact-me">
             <Text>Contact Me</Text>
           </Link>
+          <ColorModeButton />
         </HStack>
       </HStack>
     </Box>

@@ -19,6 +19,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useSubmit } from "@/hooks/useSubmit";
+import { useTheme } from "next-themes";
 
 const formSchema = z.object({
   name: z.string().nonempty({ message: "Name is required" }),
@@ -37,6 +38,8 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const ContactMe = () => {
+  const { theme } = useTheme();
+
   const {
     register,
     handleSubmit,
@@ -63,7 +66,7 @@ const ContactMe = () => {
         height="100vh"
         w="100%"
         id="contact-me"
-        backgroundColor="gray.950"
+        backgroundColor={theme == "dark" ? "gray.950" : "gray.50"}
         gap={20}
         justifyContent="center"
         paddingX={10}

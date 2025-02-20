@@ -1,18 +1,16 @@
-import {
-  GridItem,
-  SimpleGrid,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { GridItem, SimpleGrid, Stack, Text } from "@chakra-ui/react";
 import ProjectCard from "./ProjectCard";
+import { useTheme } from "next-themes";
 
 const Portifolio = () => {
+  const { theme } = useTheme();
+
   return (
     <Stack
       height="100vh"
       w="100%"
       id="portifolio"
-      backgroundColor="gray.900"
+      backgroundColor={theme == "dark" ? "gray.900" : "gray.100"}
       gap={20}
       justifyContent="center"
     >
