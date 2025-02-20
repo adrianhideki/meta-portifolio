@@ -2,9 +2,25 @@ import { Box, HStack, Icon, Link, Text } from "@chakra-ui/react";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useRef, useState } from "react";
 
 const Header = () => {
   const hoverStyle = { color: "purple.200", transition: "0.3s color" };
+  const scrollRef = useRef(0);
+  const [hasScrolledDown, setHasScrolledDown] = useState(false);
+
+  const handleScroll = () => {
+    setHasScrolledDown(window.scrollY > scrollRef.current)
+    scrollRef.current = window.scrollY;
+  }
+
+  useEffect(() => {
+    addEventListener('scroll', handleScroll);
+    return () => {
+      removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <Box
       as="header"
@@ -13,6 +29,11 @@ const Header = () => {
       display="flex"
       backgroundColor="purple.950"
       paddingX={40}
+      position="fixed"
+      top={0}
+      zIndex={999}
+      transform={hasScrolledDown ? "translateY(-200px)" : "translateY(0px)"}
+      transition={"transform 0.5s ease-in-out"}
     >
       <HStack gap={10} w="100%">
         <Link href="https://github.com/adrianhideki" target="_blank">

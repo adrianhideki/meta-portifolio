@@ -1,4 +1,6 @@
 import { Field } from "@/components/ui/field";
+import { Toaster, toaster } from "@/components/ui/toaster";
+
 import {
   Text,
   Stack,
@@ -10,10 +12,13 @@ import {
   SelectContent,
   SelectItem,
   createListCollection,
+  Textarea,
 } from "@chakra-ui/react";
+
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { getRandomInt } from "@/utils/getRandomInt";
 
 const formSchema = z.object({
   name: z.string().nonempty({ message: "Name is required" }),
@@ -38,97 +43,112 @@ const ContactMe = () => {
     resolver: zodResolver(formSchema),
   });
 
-  console.log(errors);
+  const onSubmit = handleSubmit((data) => {
+    if (getRandomInt(10) > 8) {
+      toaster.error({
+        title: "Oops!",
+        description: "Something wen wrong, please try again later!",
+      });
+    } else {
+      toaster.success({
+        title: "All good!",
+        description: `Thanks for your submission ${data.name}, we will get back to you shortly!`,
+      });
+    }
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+    console.log(data);
+  });
 
   return (
-    <Stack
-      height="100vh"
-      w="100%"
-      id="contact-me"
-      backgroundColor="gray.950"
-      gap={20}
-      justifyContent="center"
-      paddingX={10}
-    >
-      <Text textStyle="3xl">Contact me</Text>
-      <form onSubmit={onSubmit}>
-        <Stack gap={2}>
-          <Field
-            label="Name"
-            invalid={!!errors.name}
-            errorText={errors.name?.message}
-          >
-            <Input
-              {...register("name", { required: "Name is required" })}
-              placeholder="Enter your name"
-            />
-          </Field>
-          <Field
-            invalid={!!errors.email}
-            errorText={errors.email?.message}
-            label="Email"
-            helperText="We'll never share your email."
-          >
-            <Input
-              {...register("email", { required: "e-mail is required" })}
-              placeholder="Enter your email"
-              type="email"
-            />
-          </Field>
-          <Field
-            label="Type"
-            invalid={!!errors.type}
-            errorText={errors.type?.message}
-            required
-          >
-            <Controller
-              control={control}
-              name="type"
-              render={({ field }) => (
-                <SelectRoot
-                  name={field.name}
-                  value={field.value}
-                  required
-                  onValueChange={({ value }) => field.onChange(value)}
-                  onInteractOutside={() => field.onBlur()}
-                  collection={types}
-                >
-                  <SelectTrigger>
-                    <SelectValueText placeholder="Select a type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {types.items.map((item) => (
-                      <SelectItem item={item} key={item.value}>
-                        {item.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </SelectRoot>
-              )}
-            />
-          </Field>
-          <Field
-            invalid={!!errors.message}
-            errorText={errors.message?.message}
-            label="Message"
-          >
-            <Input
-              {...register("message", { required: "Message is required" })}
-              placeholder="Enter your message"
-            />
-          </Field>
-          <Button
-            backgroundColor={"purple.950"}
-            color="whiteAlpha.950"
-            type="submit"
-          >
-            Submit
-          </Button>
-        </Stack>
-      </form>
-    </Stack>
+    <>
+      <Stack
+        height="100vh"
+        w="100%"
+        id="contact-me"
+        backgroundColor="gray.950"
+        gap={20}
+        justifyContent="center"
+        paddingX={10}
+      >
+        <Text textStyle="3xl">Contact me</Text>
+        <form onSubmit={onSubmit}>
+          <Stack gap={2}>
+            <Field
+              label="Name"
+              invalid={!!errors.name}
+              errorText={errors.name?.message}
+            >
+              <Input
+                {...register("name", { required: "Name is required" })}
+                placeholder="Enter your name"
+              />
+            </Field>
+            <Field
+              invalid={!!errors.email}
+              errorText={errors.email?.message}
+              label="Email"
+              helperText="We'll never share your email."
+            >
+              <Input
+                {...register("email", { required: "e-mail is required" })}
+                placeholder="Enter your email"
+                type="email"
+              />
+            </Field>
+            <Field
+              label="Type"
+              invalid={!!errors.type}
+              errorText={errors.type?.message}
+              required
+            >
+              <Controller
+                control={control}
+                name="type"
+                render={({ field }) => (
+                  <SelectRoot
+                    name={field.name}
+                    value={field.value}
+                    required
+                    onValueChange={({ value }) => field.onChange(value)}
+                    onInteractOutside={() => field.onBlur()}
+                    collection={types}
+                  >
+                    <SelectTrigger>
+                      <SelectValueText placeholder="Select a type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {types.items.map((item) => (
+                        <SelectItem item={item} key={item.value}>
+                          {item.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </SelectRoot>
+                )}
+              />
+            </Field>
+            <Field
+              invalid={!!errors.message}
+              errorText={errors.message?.message}
+              label="Message"
+            >
+              <Textarea
+                {...register("message", { required: "Message is required" })}
+                placeholder="Enter your message"
+              />
+            </Field>
+            <Button
+              backgroundColor={"purple.950"}
+              color="whiteAlpha.950"
+              type="submit"
+            >
+              Submit
+            </Button>
+          </Stack>
+        </form>
+      </Stack>
+      <Toaster />
+    </>
   );
 };
 
