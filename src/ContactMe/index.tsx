@@ -1,5 +1,5 @@
 import { Field } from "@/components/ui/field";
-import { Toaster, toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/toaster";
 
 import {
   Text,
@@ -18,12 +18,15 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { getRandomInt } from "@/utils/getRandomInt";
+import { useSubmit } from "@/hooks/useSubmit";
 
 const formSchema = z.object({
   name: z.string().nonempty({ message: "Name is required" }),
-  email: z.string().email({ message: "e-mail is required" }),
-  message: z.string().nonempty({ message: "Message is required" }),
+  email: z.string().email({ message: "e-mail must be valid" }),
+  message: z
+    .string()
+    .min(25, { message: "The message should contain at most 25 characters" })
+    .nonempty({ message: "Message is required" }),
   type: z
     .string({
       message: "Type is required",
@@ -39,24 +42,19 @@ const ContactMe = () => {
     handleSubmit,
     formState: { errors },
     control,
+    reset
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = handleSubmit((data) => {
-    if (getRandomInt(10) > 8) {
-      toaster.error({
-        title: "Oops!",
-        description: "Something wen wrong, please try again later!",
-      });
-    } else {
-      toaster.success({
-        title: "All good!",
-        description: `Thanks for your submission ${data.name}, we will get back to you shortly!`,
-      });
-    }
+  const { handleSubmit: handleSubmitForm, isLoading } = useSubmit();
 
-    console.log(data);
+  const onSubmit = handleSubmit((data) => {
+    handleSubmitForm(data).then((result) => {
+      if (result) {
+        reset();
+      }
+    });
   });
 
   return (
@@ -141,6 +139,7 @@ const ContactMe = () => {
               backgroundColor={"purple.950"}
               color="whiteAlpha.950"
               type="submit"
+              loading={isLoading}
             >
               Submit
             </Button>
