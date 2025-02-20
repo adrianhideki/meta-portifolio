@@ -1,0 +1,46 @@
+import { Box, HStack, Icon, Link, Text } from "@chakra-ui/react";
+import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const Header = () => {
+  const hoverStyle = { color: "purple.200", transition: "0.3s color" };
+  return (
+    <Box
+      as="header"
+      height={20}
+      w="100%"
+      display="flex"
+      backgroundColor="purple.950"
+      paddingX={40}
+    >
+      <HStack gap={10} w="100%">
+        <Link href="https://github.com/adrianhideki" target="_blank">
+          <Icon fontSize="2xl" _hover={hoverStyle}>
+            <FontAwesomeIcon icon={faGithub} />
+          </Icon>
+        </Link>
+        <Link href="mailto:hideki.kyun@gmail.com">
+          <Icon fontSize="2xl" _hover={hoverStyle}>
+            <FontAwesomeIcon icon={faEnvelope} />
+          </Icon>
+        </Link>
+        <Link href="https://linkedin.com/in/hidekyun" target="_blank">
+          <Icon fontSize="2xl" _hover={hoverStyle}>
+            <FontAwesomeIcon icon={faLinkedin} />
+          </Icon>
+        </Link>
+        <HStack gap={10} w="100%" justifyContent="end">
+          <Link href="#portifolio">
+            <Text>Portifolio</Text>
+          </Link>
+          <Link href="#contact-me">
+            <Text>Contact Me</Text>
+          </Link>
+        </HStack>
+      </HStack>
+    </Box>
+  );
+};
+
+export default Header;
