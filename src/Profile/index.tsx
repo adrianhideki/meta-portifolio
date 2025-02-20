@@ -11,7 +11,7 @@ const Profile = () => {
         gap={10}
         h="100%"
       >
-        <Stack alignItems="center" gap={10}>
+        <Stack alignItems="center" gap={2}>
           <Image
             src="https://avatars.githubusercontent.com/u/28422109?v=4"
             borderRadius={"full"}
@@ -20,6 +20,9 @@ const Profile = () => {
             borderColor={"purple.950"}
             alt="profile-image"
           />
+          <Text textStyle={"xl"} fontWeight={2}>
+            Hi I'm hide
+          </Text>
           <Text textStyle={"2xl"}>
             A powerfull developer specialized in React 💜
           </Text>
